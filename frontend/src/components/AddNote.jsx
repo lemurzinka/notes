@@ -23,7 +23,7 @@ const AddNote = ({ onNoteAdded }) => {
 
         setTitle("");
         setContent("");
-        onNoteAdded(); // Оновлюємо список нотаток
+        onNoteAdded(); // Update the list of notes
     };
 
     return (

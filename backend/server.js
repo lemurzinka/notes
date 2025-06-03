@@ -3,14 +3,14 @@ const cors = require('cors');
 const fs = require('fs');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // Enable CORS
+app.use(express.json()); // Parse JSON requests
 
 const path = require('path');
 const DATA_PATH = path.join(__dirname, 'data', 'notes.json');
 
 
-
+// Read notes from file
 const readNotes = () => {
     try {
         if (!fs.existsSync(DATA_PATH)) {
@@ -27,16 +27,17 @@ const readNotes = () => {
 };
 
 
-
+// Write notes to file
 const writeNotes = (notes) => {
     fs.writeFileSync(DATA_PATH, JSON.stringify(notes, null, 2), 'utf8');
 };
 
-
+// Get all notes
 app.get('/notes', (req, res) => {
     res.json(readNotes());
 });
 
+// Create a new note
 app.post('/notes', (req, res) => {
     let notes = readNotes();
     const { title, content } = req.body;
@@ -48,7 +49,7 @@ app.post('/notes', (req, res) => {
     res.status(201).json(newNote);
 });
 
-
+// Update a note
 app.put('/notes/:id', (req, res) => {
     let notes = readNotes();
     const { id } = req.params;
@@ -65,7 +66,7 @@ app.put('/notes/:id', (req, res) => {
     res.json(note);
 });
 
-
+// Delete a note
 app.delete('/notes/:id', (req, res) => {
     let notes = readNotes();
     const { id } = req.params;
@@ -75,4 +76,5 @@ app.delete('/notes/:id', (req, res) => {
     res.json({ message: "note deleted" });
 });
 
+// Start the server
 app.listen(5000, () => console.log("server started on port 5000"));

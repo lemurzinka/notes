@@ -3,11 +3,12 @@ import axios from "axios";
 import EditNote from "./EditNote";
 
 const NotesList = () => {
-    const [notes, setNotes] = useState([]);
-    const [editingNote, setEditingNote] = useState(null);
-    const [search, setSearch] = useState("");
+    const [notes, setNotes] = useState([]); // Stores the list of notes
+    const [editingNote, setEditingNote] = useState(null); // Tracks the note being edited
+    const [search, setSearch] = useState(""); // Search input state
     const [searchDate, setSearchDate] = useState(""); // New state for date filter
 
+    // Fetches notes from the backend
     const fetchNotes = () => {
         axios.get("http://localhost:5000/notes")
             .then(response => setNotes(response.data))
@@ -16,6 +17,7 @@ const NotesList = () => {
 
     useEffect(() => { fetchNotes(); }, []);
 
+    // Deletes a note by ID
     const deleteNote = async (id) => {
         await axios.delete(`http://localhost:5000/notes/${id}`);
         fetchNotes();
